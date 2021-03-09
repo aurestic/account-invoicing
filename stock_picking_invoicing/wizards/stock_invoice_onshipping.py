@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2019-Today: Odoo Community Association (OCA)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 from odoo import models, fields, api, _
@@ -298,7 +297,7 @@ class StockInvoiceOnshipping(models.TransientModel):
             grouped_picking.update({
                 key: picks_grouped,
             })
-        return grouped_picking.values()
+        return list(grouped_picking.values())
 
     @api.multi
     def _simulate_invoice_onchange(self, values):
@@ -339,7 +338,7 @@ class StockInvoiceOnshipping(models.TransientModel):
                 currency = partner.property_product_pricelist.currency_id
         journal = self._get_journal()
         invoice_obj = self.env['account.invoice']
-        values = invoice_obj.default_get(invoice_obj.fields_get().keys())
+        values = invoice_obj.default_get(list(invoice_obj.fields_get().keys()))
         values.update({
             'origin': ", ".join(pickings.mapped("name")),
             'user_id': self.env.user.id,
@@ -385,7 +384,7 @@ class StockInvoiceOnshipping(models.TransientModel):
             grouped_moves.update({
                 key: move_grouped,
             })
-        return grouped_moves.values()
+        return list(grouped_moves.values())
 
     @api.multi
     def _simulate_invoice_line_onchange(self, values):
@@ -443,7 +442,7 @@ class StockInvoiceOnshipping(models.TransientModel):
         price = moves._get_price_unit_invoice(
             inv_type, invoice.partner_id, quantity)
         line_obj = self.env['account.invoice.line']
-        values = line_obj.default_get(line_obj.fields_get().keys())
+        values = line_obj.default_get(list(line_obj.fields_get().keys()))
         values.update({
             'name': name,
             'account_id': account.id,

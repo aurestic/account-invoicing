@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2019-Today: Odoo Community Association (OCA)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 from odoo.tests.common import TransactionCase
@@ -61,7 +60,7 @@ class TestPickingInvoicing(TransactionCase):
             active_model=picking._name,
             active_id=picking.id,
         )
-        fields_list = wizard_obj.fields_get().keys()
+        fields_list = list(wizard_obj.fields_get().keys())
         wizard_values = wizard_obj.default_get(fields_list)
         wizard = wizard_obj.create(wizard_values)
         wizard.onchange_group()
@@ -73,7 +72,7 @@ class TestPickingInvoicing(TransactionCase):
         self.assertIn(invoice, picking.invoice_ids)
         self.assertIn(picking, invoice.picking_ids)
         nb_invoice_after = self.invoice_model.search_count([])
-        self.assertEquals(nb_invoice_before, nb_invoice_after - len(invoice))
+        self.assertEqual(nb_invoice_before, nb_invoice_after - len(invoice))
 
     def test_1_picking_invoicing(self):
         nb_invoice_before = self.invoice_model.search_count([])
@@ -105,7 +104,7 @@ class TestPickingInvoicing(TransactionCase):
             active_model=picking._name,
             active_id=picking.id,
         )
-        fields_list = wizard_obj.fields_get().keys()
+        fields_list = list(wizard_obj.fields_get().keys())
         wizard_values = wizard_obj.default_get(fields_list)
         wizard = wizard_obj.create(wizard_values)
         wizard.onchange_group()
@@ -114,7 +113,7 @@ class TestPickingInvoicing(TransactionCase):
         msg = "No invoice created!"
         self.assertIn(msg, e.exception.name)
         nb_invoice_after = self.invoice_model.search_count([])
-        self.assertEquals(nb_invoice_before, nb_invoice_after)
+        self.assertEqual(nb_invoice_before, nb_invoice_after)
 
     def test_2_picking_invoicing(self):
         nb_invoice_before = self.invoice_model.search_count([])
@@ -147,7 +146,7 @@ class TestPickingInvoicing(TransactionCase):
             active_model=picking._name,
             active_id=picking.id,
         )
-        fields_list = wizard_obj.fields_get().keys()
+        fields_list = list(wizard_obj.fields_get().keys())
         wizard_values = wizard_obj.default_get(fields_list)
         wizard_values.update({
             'group': 'partner',
@@ -162,7 +161,7 @@ class TestPickingInvoicing(TransactionCase):
         self.assertIn(invoice, picking.invoice_ids)
         self.assertIn(picking, invoice.picking_ids)
         nb_invoice_after = self.invoice_model.search_count([])
-        self.assertEquals(nb_invoice_before, nb_invoice_after - len(invoice))
+        self.assertEqual(nb_invoice_before, nb_invoice_after - len(invoice))
 
     def test_picking_cancel(self):
         """
@@ -200,7 +199,7 @@ class TestPickingInvoicing(TransactionCase):
             active_model=picking._name,
             active_id=picking.id,
         )
-        fields_list = wizard_obj.fields_get().keys()
+        fields_list = list(wizard_obj.fields_get().keys())
         wizard_values = wizard_obj.default_get(fields_list)
         wizard_values.update({
             'group': 'partner',
@@ -217,7 +216,7 @@ class TestPickingInvoicing(TransactionCase):
         self.assertIn(invoice, picking.invoice_ids)
         self.assertIn(picking, invoice.picking_ids)
         nb_invoice_after = self.invoice_model.search_count([])
-        self.assertEquals(nb_invoice_before, nb_invoice_after - len(invoice))
+        self.assertEqual(nb_invoice_before, nb_invoice_after - len(invoice))
 
     def test_picking_invoice_refund(self):
         """
@@ -254,7 +253,7 @@ class TestPickingInvoicing(TransactionCase):
             active_model=picking._name,
             active_id=picking.id,
         )
-        fields_list = wizard_obj.fields_get().keys()
+        fields_list = list(wizard_obj.fields_get().keys())
         wizard_values = wizard_obj.default_get(fields_list)
         wizard_values.update({
             'group': 'partner',
@@ -275,7 +274,7 @@ class TestPickingInvoicing(TransactionCase):
         self.assertIn(refund, picking.invoice_ids)
         self.assertIn(picking, refund.picking_ids)
         nb_invoice_after = self.invoice_model.search_count([])
-        self.assertEquals(nb_invoice_before,
+        self.assertEqual(nb_invoice_before,
                           nb_invoice_after - len(invoice | refund))
 
     def test_picking_invoicing_by_product1(self):
@@ -325,7 +324,7 @@ class TestPickingInvoicing(TransactionCase):
             active_model=picking._name,
             active_id=picking.id,
         )
-        fields_list = wizard_obj.fields_get().keys()
+        fields_list = list(wizard_obj.fields_get().keys())
         wizard_values = wizard_obj.default_get(fields_list)
         # One invoice per partner but group products
         wizard_values.update({
@@ -341,11 +340,11 @@ class TestPickingInvoicing(TransactionCase):
         self.assertIn(invoice, picking.invoice_ids)
         self.assertIn(picking, invoice.picking_ids)
         products = invoice.invoice_line_ids.mapped("product_id")
-        self.assertEquals(len(invoice.invoice_line_ids), 2)
+        self.assertEqual(len(invoice.invoice_line_ids), 2)
         self.assertIn(self.product, products)
         self.assertIn(self.product2, products)
         nb_invoice_after = self.invoice_model.search_count([])
-        self.assertEquals(nb_invoice_before, nb_invoice_after - len(invoice))
+        self.assertEqual(nb_invoice_before, nb_invoice_after - len(invoice))
 
     def test_picking_invoicing_by_product2(self):
         """
@@ -403,7 +402,7 @@ class TestPickingInvoicing(TransactionCase):
             active_ids=pickings.ids,
             active_model=pickings._name,
         )
-        fields_list = wizard_obj.fields_get().keys()
+        fields_list = list(wizard_obj.fields_get().keys())
         wizard_values = wizard_obj.default_get(fields_list)
         # One invoice per partner but group products
         wizard_values.update({
@@ -414,7 +413,7 @@ class TestPickingInvoicing(TransactionCase):
         action = wizard.action_generate()
         domain = action.get('domain', [])
         invoice = self.invoice_model.search(domain)
-        self.assertEquals(len(invoice), 1)
+        self.assertEqual(len(invoice), 1)
         self.assertEqual(picking.invoice_state, 'invoiced')
         self.assertEqual(picking2.invoice_state, 'invoiced')
         self.assertEqual(invoice.partner_id, self.partner)
@@ -430,10 +429,10 @@ class TestPickingInvoicing(TransactionCase):
         # Now test behaviour if the invoice is delete
         invoice.unlink()
         for picking in pickings:
-            self.assertEquals(picking.invoice_state, "2binvoiced")
+            self.assertEqual(picking.invoice_state, "2binvoiced")
         nb_invoice_after = self.invoice_model.search_count([])
         # Should be equals because we delete the invoice
-        self.assertEquals(nb_invoice_before, nb_invoice_after)
+        self.assertEqual(nb_invoice_before, nb_invoice_after)
 
     def test_picking_invoicing_by_product3(self):
         """
@@ -493,7 +492,7 @@ class TestPickingInvoicing(TransactionCase):
             active_ids=pickings.ids,
             active_model=pickings._name,
         )
-        fields_list = wizard_obj.fields_get().keys()
+        fields_list = list(wizard_obj.fields_get().keys())
         wizard_values = wizard_obj.default_get(fields_list)
         # One invoice per partner but group products
         wizard_values.update({
@@ -504,13 +503,13 @@ class TestPickingInvoicing(TransactionCase):
         action = wizard.action_generate()
         domain = action.get('domain', [])
         invoices = self.invoice_model.search(domain)
-        self.assertEquals(len(invoices), 2)
+        self.assertEqual(len(invoices), 2)
         self.assertEqual(picking.invoice_state, 'invoiced')
         self.assertEqual(picking2.invoice_state, 'invoiced')
         self.assertIn(self.partner, invoices.mapped("partner_id"))
         self.assertIn(self.partner3, invoices.mapped("partner_id"))
         for invoice in invoices:
-            self.assertEquals(len(invoice.picking_ids), 1)
+            self.assertEqual(len(invoice.picking_ids), 1)
             picking = invoice.picking_ids
             self.assertIn(invoice, picking.invoice_ids)
             for line in invoice.invoice_line_ids:
@@ -518,6 +517,6 @@ class TestPickingInvoicing(TransactionCase):
             # Test the behaviour when the invoice is cancelled
             # The picking invoice_status should be updated
             invoice.action_cancel()
-            self.assertEquals(picking.invoice_state, "2binvoiced")
+            self.assertEqual(picking.invoice_state, "2binvoiced")
         nb_invoice_after = self.invoice_model.search_count([])
-        self.assertEquals(nb_invoice_before, nb_invoice_after - len(invoices))
+        self.assertEqual(nb_invoice_before, nb_invoice_after - len(invoices))
