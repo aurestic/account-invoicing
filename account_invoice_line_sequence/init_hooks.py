@@ -2,14 +2,15 @@
 # Copyright 2017 Serpent Consulting Services Pvt. Ltd.
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from odoo import SUPERUSER_ID
-from odoo.api import Environment
+from odoo import SUPERUSER_ID, api
 
 
-def post_init_hook(cr, pool):
+def post_init_hook(cr, registry):
     """
     Fetches all invoice and resets the sequence of their invoice line
     """
-    env = Environment(cr, SUPERUSER_ID, {})
-    invoice = env["account.move"].search([])
-    invoice._reset_sequence()
+    with api.Environment.manage():
+        env = api.Environment(cr, SUPERUSER_ID, {})
+        invoice = env["account.move"].search([])
+        invoice.read(["sequence"])
+        invoice._reset_sequence()
