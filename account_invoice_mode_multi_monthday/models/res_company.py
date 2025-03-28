@@ -30,7 +30,7 @@ class ResCompany(models.Model):
     def fix_typo_comma_sepparated(self, days):
         return ",".join(
             filter(
-                lambda val: val and val.isnumeric() and 0 < int(val) < 31,
+                lambda val: val and val.isnumeric() and 0 < int(val) <= 31,
                 days.split(","),
             )
         )
