@@ -2,3 +2,5 @@
 - Francesco Apruzzese \<f.apruzzese@apuliasoftware.it\>
 - Rattapong Chokmasermkul \<rattapongc@ecosoft.co.th\>
 - Simone Vanin \<simone.vanin@agilebg.com\> (<https://www.agilebg.com/>)
+- [Aures TIC](https://www.aurestic.es):
+  - Jordi Aura
