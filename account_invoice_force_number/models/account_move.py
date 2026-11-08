@@ -28,10 +28,10 @@ class AccountMove(models.Model):
                         """state and modify its content, then re-confirm it."""
                     )
                 )
-        return super(AccountMove, self).unlink()
+        return super().unlink()
 
     def _post(self, soft=True):
         for move in self:
             if move.move_name:
                 move.write({"name": move.move_name})
-        return super(AccountMove, self)._post(soft=soft)
+        return super()._post(soft=soft)
