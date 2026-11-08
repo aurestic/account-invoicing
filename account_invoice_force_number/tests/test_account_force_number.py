@@ -13,10 +13,9 @@ from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 @tagged("post_install", "-at_install")
 class TestAccountForceNumber(AccountTestInvoicingCommon):
     def create_invoice(self, move_name=None):
-        partner_id = self.env.ref("base.res_partner_12").id
         invoice_vals = {
             "move_type": "out_invoice",
-            "partner_id": partner_id,
+            "partner_id": self.partner_a.id,
             "invoice_line_ids": [
                 (
                     0,
